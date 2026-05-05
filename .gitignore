@@ -1,0 +1,28 @@
+# --- GLOBAL & OS FILES ---
+# Ignore Mac system files everywhere
+.DS_Store
+# Ignore Windows system files everywhere
+Thumbs.db
+# Ignore VS Code editor settings everywhere
+.vscode/
+
+# --- DEPENDENCIES ---
+# This ignores node_modules in root, frontend, AND backend
+node_modules/
+
+# --- ENVIRONMENT VARIABLES ---
+# Critical: Ignore secrets in any folder
+.env
+.env.local
+.env.production
+
+# --- BUILD OUTPUTS ---
+# If your frontend builds to a 'dist' or 'build' folder, ignore it
+dist/
+build/
+
+# --- BACKEND SPECIFIC ---
+# If your backend logs errors to a file
+*.log
+# If using Python, ignore compiled files
+__pycache__/
