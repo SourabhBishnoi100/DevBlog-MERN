@@ -5,6 +5,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import connectDb from "./config/db.js";
 import postRoutes from "./routes/postRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
 
@@ -22,6 +24,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/posts", postRoutes);
+app.use("/api/users", userRoutes);
+
+//error middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
