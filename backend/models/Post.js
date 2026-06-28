@@ -35,7 +35,12 @@ const postSchema = new mongoose.Schema(
       trim: true,
     },
 
-    tags: [],
+    tags: [{
+      type: String,
+      trim: true,
+      lowercase: true,
+      maxLength: 30,
+    }],
   },
   {
     timestamps: true,
