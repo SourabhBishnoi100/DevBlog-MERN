@@ -1,0 +1,8 @@
+store-dir: "/src/.pnpm-store"
+minimumReleaseAge: 10080
+blockExoticSubdeps: true
+trustPolicy: 'no-downgrade'
+allowBuilds: []
+trustPolicyExclude:
+  - semver@6.3.1
+  - nanoid@3.3.14
