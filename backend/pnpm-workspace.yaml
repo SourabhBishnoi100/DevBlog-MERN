@@ -1,3 +1,5 @@
-trustPolicy: no-downgrade
-# trustPolicyExclude:
-#   - semver@6.3.1
+store-dir: "/src/.pnpm-store"
+minimumReleaseAge: 10080
+blockExoticSubdeps: true
+trustPolicy: 'no-downgrade'
+allowBuilds: []
