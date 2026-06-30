@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/posts.js";
+import PostCard from "../components/posts/PostCard.jsx";
+import Spinner from "../components/ui/Spinner.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     async function loadPosts() {
       console.log("useEffect is run")
-      try{
+      try {
         console.log("Loading Posts");
-        const data = await getPosts(2);
-        setPosts(data.data);
+        const response = await getPosts(2);
+        setPosts(response.data);
       }
-      catch(error){
+      catch (error) {
         setError(error.message);
       }
-      finally{
+      finally {
         setLoading(false);
       }
     }
@@ -25,22 +27,22 @@ export default function Home() {
   }, []);
 
 
-  if (loading){
-    return <p>loading...</p>;
+  if (loading) {
+    return <Spinner/>;
   }
 
-  if(error){
+  if (error) {
     return <p>{error}</p>;
   }
 
-  return(
-    <>
-    {posts.map(post =>(
-      <article key={post._id}>
-        <h2>{post.title}</h2>
-        <p>{post.excerpt}</p>
-      </article>
-    ))}
-    </>
+  return (
+    <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
+      {posts.map(post => (
+        <PostCard
+          key={post._id}
+          post={post}
+        />
+      ))}
+    </div>
   )
 }
