@@ -11,7 +11,7 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 
     const totalPosts = await Post.countDocuments();
 
-    const posts = await Post.find().select("title slug excerpt coverImage author tags").populate("author", "name").sort({ createdAt: -1 }).skip(skip).limit(limit);
+    const posts = await Post.find().select("title slug excerpt coverImage author tags createdAt").populate("author", "name").sort({ createdAt: -1 }).skip(skip).limit(limit);
 
     
     return res.status(200).json({
