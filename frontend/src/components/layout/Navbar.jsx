@@ -1,26 +1,62 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import { useAuth } from "../../context/AuthContext";
 
-export default function Navbar() {
-  return (
-    <header className="border-b border-gray-200">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <h1 className="text-xl font-bold">
-          MERN Blog
-        </h1>
+function Navbar() {
+    const navigate = useNavigate();
+    const { auth, logout } = useAuth();
 
-        <div className="flex gap-6">
-          <NavLink to="/" className={linkClass}>Home</NavLink>
+    function handleLogout() {
+        logout();
+        navigate("/", { replace: true });
+    }
 
-          <NavLink to="/login" className={linkClass}>Login</NavLink>
+    return (
+        <nav className="border-b bg-white shadow-sm">
+            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+                <NavLink
+                    to="/"
+                    className="text-xl font-bold"
+                >
+                    MERN Blog
+                </NavLink>
 
-          <NavLink to="/register" className={linkClass}>Register</NavLink>
-        </div>
-      </nav>
-    </header>
-  );
+                <div className="flex items-center gap-6">
+                    <NavLink to="/">
+                        Home
+                    </NavLink>
+
+                    {auth.token ? (
+                        <>
+                            <NavLink to="/dashboard">
+                                Dashboard
+                            </NavLink>
+
+                            <span className="text-gray-600">
+                                Hello, {auth.user?.name}
+                            </span>
+
+                            <button
+                                onClick={handleLogout}
+                                className="text-red-600 hover:underline"
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink to="/login">
+                                Login
+                            </NavLink>
+
+                            <NavLink to="/register">
+                                Register
+                            </NavLink>
+                        </>
+                    )}
+                </div>
+            </div>
+        </nav>
+    );
 }
 
-const linkClass = ({ isActive }) => {
-  return isActive ? "font-semibold text-blue-600"
-    : "text-gray-600 hover:text-black";
-}
+export default Navbar;
