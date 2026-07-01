@@ -4,8 +4,8 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard";
 import PostDetails from "./pages/PostDetails";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
