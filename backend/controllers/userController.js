@@ -57,11 +57,13 @@ export const loginUser = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
+    data: {
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      }
     }
   })
 })
