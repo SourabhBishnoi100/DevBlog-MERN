@@ -41,7 +41,7 @@ export const getPostById = asyncHandler(async (req, res, next) => {
 })
 
 export const getMyPosts = asyncHandler(async (req, res, next) => {
-    const myPosts = await Post.find({ author: req.user._id }.populate("author", "name")).sort({ createdAt: -1 });
+    const myPosts = await Post.find({ author: req.user._id }).populate("author", "name").sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, data: myPosts });
 })
