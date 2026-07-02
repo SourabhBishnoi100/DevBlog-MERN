@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function Navbar() {
     const navigate = useNavigate();
-    const { auth, logout } = useAuth();
+    const { auth, isAuthenticated, logout } = useAuth();
 
     function handleLogout() {
         logout();
@@ -25,7 +25,7 @@ function Navbar() {
                         Home
                     </NavLink>
 
-                    {auth.token ? (
+                    {isAuthenticated ? (
                         <>
                             <NavLink to="/dashboard">
                                 Dashboard

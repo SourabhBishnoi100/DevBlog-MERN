@@ -2,9 +2,9 @@ import { Navigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 
 function GuestRoute({ children }) {
-    const { auth } = useAuth();
+    const { isAuthenticated } = useAuth();
 
-    if (auth.token) {
+    if (isAuthenticated) {
         return <Navigate to="/dashboard" replace />;
     }
 

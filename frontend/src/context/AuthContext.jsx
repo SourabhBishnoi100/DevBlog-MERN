@@ -48,6 +48,7 @@ export function AuthProvider({ children }) {
 
     const value = {
         auth,
+        isAuthenticated : Boolean(auth.token),
         login,
         logout,
     }
