@@ -2,7 +2,7 @@ import Post from "../models/Post.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 export const getPosts = asyncHandler(async (req, res, next) => {
-    
+
     const page = req.query.page || 1;
 
     const limit = 10;
@@ -13,23 +13,23 @@ export const getPosts = asyncHandler(async (req, res, next) => {
 
     const posts = await Post.find().select("title slug excerpt coverImage author tags createdAt").populate("author", "name").sort({ createdAt: -1 }).skip(skip).limit(limit);
 
-    
+
     return res.status(200).json({
         success: true,
-        currentPage : page,
-        totalPages : Math.ceil(totalPosts/limit),
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / limit),
         totalPosts,
         count: posts.length,
         data: posts,
     });
 })
 
-export const getPostById = asyncHandler( async (req, res, next) => {
+export const getPostById = asyncHandler(async (req, res, next) => {
     const postId = req.params.id;
 
     const post = await Post.findById(postId).populate("author", "name email");
 
-    if(!post){
+    if (!post) {
         res.status(404);
         throw new Error("Post not found");
     }
@@ -38,6 +38,12 @@ export const getPostById = asyncHandler( async (req, res, next) => {
         success: true,
         data: post
     })
+})
+
+export const getMyPosts = asyncHandler(async (req, res, next) => {
+    const myPosts = await Post.find({ author: req.user._id }.populate("author", "name")).sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, data: myPosts });
 })
 
 export const createPost = asyncHandler(async (req, res, next) => {
@@ -53,21 +59,21 @@ export const deletePost = asyncHandler(async (req, res, next) => {
 
     const post = await Post.findById(req.params.id);
 
-    if(!post) {
+    if (!post) {
         res.status(404);
         throw new Error("Post not found");
     }
 
-    if(post.author.toString() !== req.user._id.toString()){
+    if (post.author.toString() !== req.user._id.toString()) {
         res.status(401);
         throw new Error("not authorized, couldn't delete the post !");
-    } 
+    }
 
     await post.deleteOne();
 
-    return res.status(200).json({ 
+    return res.status(200).json({
         success: true,
-        message: "Post deleted successfully...." 
+        message: "Post deleted successfully...."
     });
 })
 
