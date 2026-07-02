@@ -7,3 +7,7 @@ export async function getPosts(page=1){
 export async function getPost(slug) {
     return apiFetch(`/posts/slug/${slug}`);
 }
+
+export async function getMyPosts(){
+    return apiFetch('/posts/me');
+}
