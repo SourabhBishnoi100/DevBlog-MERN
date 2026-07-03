@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import PostDetails from "./pages/PostDetails";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import GuestRoute from "./components/auth/GuestRoute";
+import CreatePost from "./pages/dashboard/CreatePost";
 
 
 
@@ -46,6 +47,15 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/posts/new"
+              element={
+                <ProtectedRoute>
+                  <CreatePost/>
                 </ProtectedRoute>
               }
             />
