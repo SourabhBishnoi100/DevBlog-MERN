@@ -3,7 +3,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 
 export const getPosts = asyncHandler(async (req, res, next) => {
 
-    const page = req.query.page || 1;
+    const page = Number(req.query.page) || 1;
 
     const limit = 10;
 
@@ -46,14 +46,37 @@ export const getMyPosts = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: myPosts });
 })
 
-export const createPost = asyncHandler(async (req, res, next) => {
-    const newPost = await Post.create({ ...req.body, author: req.user._id });
+export const createPost = asyncHandler(async (req, res) => {
+    const {
+        title,
+        excerpt,
+        coverImage,
+        content,
+        tags,
+    } = req.body;
+
+    const slug = title
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+
+    const newPost = await Post.create({
+        title,
+        slug,
+        excerpt,
+        coverImage,
+        content,
+        tags,
+        author: req.user._id,
+    });
+
+    const populatedPost = await newPost.populate("author", "name");
 
     return res.status(201).json({
         success: true,
-        data: newPost
-    })
-})
+        data: populatedPost,
+    });
+});
 
 export const deletePost = asyncHandler(async (req, res, next) => {
 
@@ -78,13 +101,14 @@ export const deletePost = asyncHandler(async (req, res, next) => {
 })
 
 export const getPostBySlug = asyncHandler(async (req, res, next) => {
-    const post = await Post.findOne({ slug: req.params.slug });
+    const post = await Post.findOne({ slug: req.params.slug }).populate("author", "name");
     if (!post) {
-        return res.status(404).json({ message: "Post not found..." });
+        res.status(404);
+        throw new Error("Post not found");
     }
 
     return res.status(200).json({
-        sucess: true,
+        success: true,
         data: post
     });
 })
@@ -104,7 +128,14 @@ export const updatePost = asyncHandler(async (req, res, next) => {
     }
 
     post.title = req.body.title || post.title;
-    post.slug = req.body.slug || post.slug;
+
+    if (req.body.title) {
+        post.slug = req.body.title
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+    }
+
     post.excerpt = req.body.excerpt || post.excerpt;
     post.coverImage = req.body.coverImage || post.coverImage;
     post.content = req.body.content || post.content;
@@ -114,9 +145,11 @@ export const updatePost = asyncHandler(async (req, res, next) => {
 
     const updatedPost = await post.save();
 
+    const populatedPost = await updatedPost.populate("author", "name");
+
     return res.status(200).json({
         success: true,
-        data: updatedPost
+        data: populatedPost
     });
 });
 
