@@ -3,21 +3,31 @@ import asyncHandler from "../utils/asyncHandler.js";
 
 export const getPosts = asyncHandler(async (req, res, next) => {
 
-    const page = Number(req.query.page) || 1;
+    const requestedPage = Number(req.query.page) || 1;
 
     const limit = 10;
 
-    const skip = (page - 1) * limit;
-
     const totalPosts = await Post.countDocuments();
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(totalPosts / limit)
+    );
+
+    const currentPage = Math.min(
+        Math.max(requestedPage, 1),
+        totalPages
+    );
+
+    const skip = (currentPage - 1) * limit;
 
     const posts = await Post.find().select("title slug excerpt coverImage author tags createdAt").populate("author", "name").sort({ createdAt: -1 }).skip(skip).limit(limit);
 
 
     return res.status(200).json({
         success: true,
-        currentPage: page,
-        totalPages: Math.ceil(totalPosts / limit),
+        currentPage: currentPage,
+        totalPages: totalPages,
         totalPosts,
         count: posts.length,
         data: posts,
