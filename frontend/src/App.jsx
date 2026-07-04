@@ -11,6 +11,7 @@ import PostDetails from "./pages/PostDetails";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import GuestRoute from "./components/auth/GuestRoute";
 import CreatePost from "./pages/dashboard/CreatePost";
+import EditPost from "./pages/dashboard/EditPost";
 
 
 
@@ -55,7 +56,7 @@ export default function App() {
               path="/dashboard/posts/new"
               element={
                 <ProtectedRoute>
-                  <CreatePost/>
+                  <CreatePost />
                 </ProtectedRoute>
               }
             />
@@ -64,6 +65,16 @@ export default function App() {
               path="/posts/:slug"
               element={<PostDetails />}
             />
+
+            <Route
+              path="/dashboard/posts/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <EditPost />
+                </ProtectedRoute>
+              }
+            />
+
           </Routes>
         </main>
 

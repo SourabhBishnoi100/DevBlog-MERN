@@ -8,6 +8,10 @@ export async function getPost(slug) {
     return apiFetch(`/posts/slug/${slug}`);
 }
 
+export async function getPostById(id) {
+    return apiFetch(`/posts/${id}`);
+}
+
 export async function getMyPosts() {
     return apiFetch('/posts/me');
 }
