@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-
 import { Link } from "react-router";
 
-import { getMyPosts } from "../api/posts";
+import {
+    getMyPosts,
+    deletePost,
+} from "../api/posts";
 
 import { useAuth } from "../context/AuthContext";
 
 import Spinner from "../components/ui/Spinner";
-
 import DashboardPostRow from "../components/dashboard/DashboardPostRow";
 
 function Dashboard() {
@@ -21,7 +22,6 @@ function Dashboard() {
         async function fetchPosts() {
             try {
                 const response = await getMyPosts();
-
                 setPosts(response.data);
             } catch (err) {
                 setError(err.message);
@@ -32,6 +32,28 @@ function Dashboard() {
 
         fetchPosts();
     }, []);
+
+    async function handleDelete(postId) {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this post?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await deletePost(postId);
+
+            setPosts((currentPosts) =>
+                currentPosts.filter(
+                    (post) => post._id !== postId
+                )
+            );
+        } catch (err) {
+            alert(err.message);
+        }
+    }
 
     if (loading) {
         return <Spinner />;
@@ -47,9 +69,7 @@ function Dashboard() {
 
     return (
         <div className="mx-auto max-w-5xl p-6">
-
             <div className="mb-8 flex items-center justify-between">
-
                 <div>
                     <h1 className="text-3xl font-bold">
                         Welcome, {auth.user?.name}
@@ -66,7 +86,6 @@ function Dashboard() {
                 >
                     Create New Post
                 </Link>
-
             </div>
 
             {posts.length === 0 ? (
@@ -85,11 +104,11 @@ function Dashboard() {
                         <DashboardPostRow
                             key={post._id}
                             post={post}
+                            onDelete={handleDelete}
                         />
                     ))}
                 </div>
             )}
-
         </div>
     );
 }

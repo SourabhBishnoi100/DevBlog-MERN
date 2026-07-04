@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-function DashboardPostRow({ post }) {
+function DashboardPostRow({ post, onDelete }) {
     return (
         <div className="flex items-center justify-between rounded-lg border p-4">
             <div>
@@ -22,6 +22,7 @@ function DashboardPostRow({ post }) {
                 </Link>
 
                 <button
+                    onClick={() => onDelete(post._id)}
                     className="rounded bg-red-600 px-3 py-2 text-white hover:bg-red-700"
                 >
                     Delete
