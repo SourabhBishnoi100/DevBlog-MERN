@@ -74,3 +74,29 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     }
   })
 })
+
+export const logoutUser = asyncHandler(async (req, res) => {
+
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    expires: new Date(0),
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully.",
+  });
+
+});
+
+
+export const getMe = asyncHandler(async (req, res) => {
+
+  return res.status(200).json({
+    success: true,
+    data: req.user,
+  });
+
+});
