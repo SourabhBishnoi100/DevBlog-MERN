@@ -26,7 +26,7 @@ function Navbar() {
                     to="/"
                     className="text-xl font-bold"
                 >
-                    MERN Blog
+                    DevBlog
                 </NavLink>
 
                 <div className="flex items-center gap-6">
