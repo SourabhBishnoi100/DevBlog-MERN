@@ -12,7 +12,7 @@ import Spinner from "../components/ui/Spinner";
 import DashboardPostRow from "../components/dashboard/DashboardPostRow";
 
 function Dashboard() {
-    const { auth } = useAuth();
+    const { user } = useAuth();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -72,7 +72,7 @@ function Dashboard() {
             <div className="mb-8 flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold">
-                        Welcome, {auth.user?.name}
+                        Welcome, {user?.name}
                     </h1>
 
                     <p className="text-gray-600">

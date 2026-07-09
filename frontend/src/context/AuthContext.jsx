@@ -5,7 +5,7 @@ import {
     useState,
 } from "react";
 
-import { getCurrentUser } from "../api/auth";
+import { getCurrentUser, logoutUser } from "../api/auth";
 
 const AuthContext = createContext();
 
@@ -39,8 +39,13 @@ export function AuthProvider({ children }) {
 
     }
 
-    function logout() {
-        setUser(null);
+    async function logout() {
+
+        try {
+            await logoutUser();
+        } finally {
+            setUser(null);
+        }
 
     }
 

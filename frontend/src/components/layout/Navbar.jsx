@@ -3,16 +3,25 @@ import { useAuth } from "../../context/AuthContext";
 
 function Navbar() {
     const navigate = useNavigate();
-    const { auth, isAuthenticated, logout } = useAuth();
 
-    function handleLogout() {
-        logout();
-        navigate("/", { replace: true });
+    const {
+        user,
+        isAuthenticated,
+        logout,
+    } = useAuth();
+
+    async function handleLogout() {
+        await logout();
+
+        navigate("/", {
+            replace: true,
+        });
     }
 
     return (
         <nav className="border-b bg-white shadow-sm">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+
                 <NavLink
                     to="/"
                     className="text-xl font-bold"
@@ -21,6 +30,7 @@ function Navbar() {
                 </NavLink>
 
                 <div className="flex items-center gap-6">
+
                     <NavLink to="/">
                         Home
                     </NavLink>
@@ -32,7 +42,7 @@ function Navbar() {
                             </NavLink>
 
                             <span className="text-gray-600">
-                                Hello, {auth.user?.name}
+                                Hello, {user?.name}
                             </span>
 
                             <button
@@ -41,6 +51,7 @@ function Navbar() {
                             >
                                 Logout
                             </button>
+
                         </>
                     ) : (
                         <>
@@ -53,7 +64,9 @@ function Navbar() {
                             </NavLink>
                         </>
                     )}
+
                 </div>
+
             </div>
         </nav>
     );
