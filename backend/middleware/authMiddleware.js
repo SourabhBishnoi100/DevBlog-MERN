@@ -6,16 +6,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 
     let token;
 
-    // First, try Authorization header
-    if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer")
-    ) {
-        token = req.headers.authorization.split(" ")[1];
-    }
-
-    // If no Bearer token, try cookie
-    if (!token && req.cookies.token) {
+    if (req.cookies.token) {
         token = req.cookies.token;
     }
 

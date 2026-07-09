@@ -20,12 +20,11 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 
   const user = await User.create({ name, email, password });
 
-  const token = setTokenCookie(res, user._id);
+  setTokenCookie(res, user._id);
 
   return res.status(201).json({
     success: true,
     data: {
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -60,12 +59,11 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     throw new Error("invalid credentials");;
   }
 
-  const token = setTokenCookie(res, user._id);
+  setTokenCookie(res, user._id);
 
   return res.status(200).json({
     success: true,
     data: {
-      token,
       user: {
         id: user._id,
         name: user.name,
