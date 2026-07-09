@@ -36,7 +36,7 @@ function Register() {
         try {
             const response = await registerUser(formData);
 
-            login(response.data);
+            login(response.data.user);
 
             navigate("/dashboard", {
                 replace: true,
