@@ -17,3 +17,9 @@ export function registerUser(userData) {
 export function getCurrentUser() {
     return apiFetch("/users/me");
 }
+
+export function logoutUser() {
+    return apiFetch("/users/logout", {
+        method: "POST",
+    });
+}
