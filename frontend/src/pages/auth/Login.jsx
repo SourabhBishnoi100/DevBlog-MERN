@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+
 import { loginUser } from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
+
     const { login } = useAuth();
 
     const [formData, setFormData] = useState({
@@ -27,13 +29,13 @@ function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        setError("");
         setLoading(true);
+        setError("");
 
         try {
             const response = await loginUser(formData);
 
-            login(response.data);
+            login(response.data.user);
 
             navigate("/dashboard", {
                 replace: true,
@@ -46,7 +48,7 @@ function Login() {
     }
 
     return (
-        <div className="mx-auto mt-12 max-w-md rounded-lg border p-6 shadow">
+        <div className="mx-auto max-w-md p-6">
             <h1 className="mb-6 text-center text-3xl font-bold">
                 Login
             </h1>
@@ -55,38 +57,28 @@ function Login() {
                 onSubmit={handleSubmit}
                 className="space-y-4"
             >
-                <div>
-                    <label className="mb-1 block">
-                        Email
-                    </label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full rounded border p-3"
+                    required
+                />
 
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full rounded border p-2"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label className="mb-1 block">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="w-full rounded border p-2"
-                        required
-                    />
-                </div>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full rounded border p-3"
+                    required
+                />
 
                 {error && (
-                    <p className="text-red-600">
+                    <p className="text-sm text-red-600">
                         {error}
                     </p>
                 )}
@@ -94,11 +86,21 @@ function Login() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full rounded bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:opacity-60"
+                    className="w-full rounded bg-blue-600 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
                 >
                     {loading ? "Logging in..." : "Login"}
                 </button>
             </form>
+
+            <p className="mt-6 text-center text-sm">
+                Don't have an account?{" "}
+                <Link
+                    to="/register"
+                    className="font-medium text-blue-600 hover:underline"
+                >
+                    Register
+                </Link>
+            </p>
         </div>
     );
 }

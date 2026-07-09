@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import generateToken from "../utils/generateToken.js";
+import setTokenCookie from "../utils/setTokenCookie.js";
 
 export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -19,12 +20,11 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 
   const user = await User.create({ name, email, password });
 
-  const token = await generateToken(user._id);
+  setTokenCookie(res, user._id);
 
   return res.status(201).json({
     success: true,
     data: {
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -59,12 +59,11 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     throw new Error("invalid credentials");;
   }
 
-  const token = await generateToken(user._id);
+  setTokenCookie(res, user._id);
 
   return res.status(200).json({
     success: true,
     data: {
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -73,3 +72,29 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     }
   })
 })
+
+export const logoutUser = asyncHandler(async (req, res) => {
+
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    expires: new Date(0),
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully.",
+  });
+
+});
+
+
+export const getMe = asyncHandler(async (req, res) => {
+
+  return res.status(200).json({
+    success: true,
+    data: req.user,
+  });
+
+});
