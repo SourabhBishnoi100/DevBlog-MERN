@@ -13,15 +13,21 @@ import GuestRoute from "./components/auth/GuestRoute";
 import CreatePost from "./pages/dashboard/CreatePost";
 import EditPost from "./pages/dashboard/EditPost";
 
-
-
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen flex-col">
+      {/* 
+        This root container now owns the global theme background color. 
+        It stretches edge-to-edge, instantly ensuring the whole page inherits the dark theme base.
+      */}
+      <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
         <Navbar />
 
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+        {/* 
+          Removed constraints from here so full-bleed page backgrounds can paint correctly.
+          Individual views will control their inner layout centering.
+        */}
+        <main className="w-full flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
 
@@ -61,10 +67,7 @@ export default function App() {
               }
             />
 
-            <Route
-              path="/posts/:slug"
-              element={<PostDetails />}
-            />
+            <Route path="/posts/:slug" element={<PostDetails />} />
 
             <Route
               path="/dashboard/posts/:id/edit"
@@ -74,7 +77,6 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-
           </Routes>
         </main>
 
