@@ -1,5 +1,0 @@
-store-dir: "/src/.pnpm-store"
-minimumReleaseAge: 10080
-blockExoticSubdeps: true
-trustPolicy: 'no-downgrade'
-allowBuilds: []
