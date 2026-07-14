@@ -1,0 +1,12 @@
+{
+  "name": "DevBlog-MERN",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "setup": "cd backend && pnpm install && cd ../frontend && pnpm install",
+    "build-frontend": "cd frontend && pnpm build",
+    "move-frontend": "rm -rf backend/dist && cp -r frontend/dist backend/dist",
+    "build": "pnpm run build-frontend && pnpm run move-frontend",
+    "start": "node backend/server.js"
+  }
+}
